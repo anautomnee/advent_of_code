@@ -21,7 +21,7 @@ def ifSafe(report):
                 isSafe = False
                 break
             direction = "decrease" if level > report[ind + 1] else "increase"
-        elif direction == "increase":
+        if direction == "increase":
             if level >= report[ind + 1] or (report[ind + 1] - level) > 3:
                 isSafe = False
                 break
