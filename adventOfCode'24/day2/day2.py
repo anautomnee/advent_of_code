@@ -1,44 +1,47 @@
 from utils import read_input
+import copy
 
 input = read_input("adventOfCode'24/day2")
 
-small_list = """3 7 4 6 6
-74 72 75 73 77
-74 73 71 68 67 64 61 60
-88 87 84 81 80 79 78
-51 52 53 56 59 62
-26 25 24 23 20 18 17
-45 47 48 51 54 55 58 60"""
+small_list = """7 6 4 2 1
+1 2 7 8 9
+9 7 6 2 1
+1 3 2 4 5
+8 6 4 4 1
+1 3 6 7 9"""
 
-def ifSafe(report):
-    isSafe = True
+def ifSafe(report, isModified = False):
     direction = ""
-    for ind, level in enumerate(report):
-        if ind == len(report) - 1:
-            continue
-        elif ind == 0:
-            if level == report[ind + 1]:
-                isSafe = False
-                break
-            direction = "decrease" if level > report[ind + 1] else "increase"
-        if direction == "increase":
-            if level >= report[ind + 1] or (report[ind + 1] - level) > 3:
-                isSafe = False
-                break
-        elif direction == "decrease":
-            if level <= report[ind + 1] or (level - report[ind + 1]) > 3:
-                isSafe = False
-                break
-    #print(report, isSafe)
-    return isSafe
+    for i in range(len(report) - 1):
+        diff = report[i + 1] - report[i]
+        
+        if i == 0:  # Determine the direction at the start
+            if diff == 0:
+                return False  # Equal levels are always unsafe
+            direction = "increase" if diff > 0 else "decrease"
+
+        # Check if the current pair violates safety rules
+        if direction == "increase" and (diff <= 0 or diff > 3):
+            return False
+        if direction == "decrease" and (diff >= 0 or abs(diff) > 3):
+            return False
+
+    return True
 
 def getSafeReports(reports_string):
     safeCount = 0
     reports_array = reports_string.split("\n")
     for report in reports_array:
-        safeCount = safeCount + 1 if ifSafe(list(map(int, report.split(" ")))) else safeCount
+        levels = list(map(int, report.split(" ")))
+        safeCount = safeCount + 1 if ifSafe(levels) or problem_parser(levels) else safeCount
     return safeCount
 
+def problem_parser(report):
+    for i in range(len(report)):
+        modified_report = report[:i] + report[i + 1:]
+        if ifSafe(modified_report, True):
+            return True
+    return False 
 
 print(getSafeReports(input))
             
