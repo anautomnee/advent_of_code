@@ -1,5 +1,4 @@
 from utils import read_input
-import copy
 
 input = read_input("adventOfCode'24/day2")
 
@@ -10,7 +9,7 @@ small_list = """7 6 4 2 1
 8 6 4 4 1
 1 3 6 7 9"""
 
-def ifSafe(report, isModified = False):
+def ifSafe(report):
     direction = ""
     for i in range(len(report) - 1):
         diff = report[i + 1] - report[i]
