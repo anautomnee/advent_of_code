@@ -2,18 +2,20 @@ from utils import read_input
 
 input = read_input("adventOfCode'24/day4")
 
-small_input = """....XXMAS.
-.SAMXMS...
-...S..A...
-..A.A.MS.X
-XMASAMX.MM
-X.....XA.A
-S.S.S.S.SS
-.A.A.A.A.A
-..M.M.M.MM
-.X.X.XMASX"""
+small_input = """.M.S......
+..A..MSMS.
+.M.S.MAA..
+..A.ASMSM.
+.M.S.M....
+..........
+S.S.S.S.S.
+.A.A.A.A..
+M.M.M.M.M.
+.........."""
 
-def findXmas(string):
+# Task 1
+
+def find_xmas(string):
     array = string.split("\n")
     count = 0
     for i, row in enumerate(array):
@@ -45,4 +47,20 @@ def findXmas(string):
                     count += 1
     return count
 
-print(findXmas(input))
+# Task 2
+
+def find_x_mas(string):
+    array = string.split("\n")
+    count = 0
+    for i, row in enumerate(array):
+        for y, el in enumerate(row):
+            if el == 'A':
+                # right diagonal
+                if i >= 1 and len(array) - 1 - i >= 1 and len(row) - 1 - y >= 1 and y >= 1:
+                    a = ''.join([array[i + 1][y + 1], el, array[i - 1][y - 1]])
+                    b = ''.join([array[i + 1][y - 1], el, array[i - 1][y + 1]])
+                    if (a == 'MAS' or a == 'SAM') and (b == 'MAS' or b == 'SAM'):
+                        count += 1
+    return count
+
+print(find_x_mas(input))
