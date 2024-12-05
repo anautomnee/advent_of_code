@@ -45,6 +45,7 @@ def check_rules(rules, pair):
 
 def get_correct_updates(rules, updates):
     correct_updates = []
+    incorrect_updates = []
     count = 0
     # Check each update
     for update in updates:
@@ -57,6 +58,8 @@ def get_correct_updates(rules, updates):
                 update_count += 1
                 if update_count == len(update):
                     correct_updates.append(update)
+                else:
+                    incorrect_updates.append(update)
             # Check each page with pages further
             for i in range(1, len(update) - ind + 1):
                 if i == len(update) - ind:
@@ -69,7 +72,32 @@ def get_correct_updates(rules, updates):
     # Sum middle elements in array of correct updates
     for update in correct_updates:
         count += int(update[math.floor(len(update)/2)])
+    #return count
+    return incorrect_updates
+
+
+def sort_incorrect_updates(rules, updates):
+    sorted_updates = []
+    count = 0
+    # Check each update
+    for update in updates:
+        new_update = []
+        for i in range(len(update)):
+            new_update.append('')
+        # Check each page
+        for page in update:
+            update_count = 0
+            for rule in rules:
+                if page == rule[:2] and rule[3:5] in set(update):
+                    update_count += 1
+            new_update[len(update) - 1 - update_count] = page
+        sorted_updates.append(new_update)
+
+    # Sum middle elements in array of sorted updates
+    for update in sorted_updates:
+        count += int(update[math.floor(len(update)/2)])
     return count
 
 result = get_correct_updates(rules, updates)
-print(result)
+result2 = sort_incorrect_updates(rules, result)
+print(result2)
