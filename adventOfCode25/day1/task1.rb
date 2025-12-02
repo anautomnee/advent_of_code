@@ -14,40 +14,30 @@ L99
 R14
 L82"
 
-@zero_point_counter = 0
-
 def find_password(input)
+  zero_point_counter = 0
   current_position = STARTING_POINT
 
   input.split("\n").each do |instruction|
     current_position = rotate(instruction, current_position)
-    @zero_point_counter += 1 if current_position.zero?
+    zero_point_counter += 1 if current_position.zero?
   end
 
-  puts @zero_point_counter
+  puts zero_point_counter
 end
 
 def rotate(instruction, current_position)
-  puts current_position,instruction
   steps = instruction[1..].to_i
   case instruction[0]
   when 'R'
-    rotation_result = current_position + steps
-    @zero_point_counter += rotation_result / DIALS_SIZE
-    new_position = rotation_result % DIALS_SIZE
-    @zero_point_counter -= 1 if new_position.zero?
-    new_position
+    (current_position + steps) % DIALS_SIZE
   when 'L'
-    rotation_result = current_position - steps
-    @zero_point_counter += (rotation_result / DIALS_SIZE).abs
-    new_position = rotation_result % DIALS_SIZE
-    @zero_point_counter -= 1 if current_position.zero?
-    new_position
+    (current_position - steps) % DIALS_SIZE
   else
     puts('Incorrect instruction')
     current_position
   end
 end
 
-# find_password(File.read(File.join(File.dirname(__FILE__), 'input.txt')))
-find_password(TEST_INPUT)
+find_password(File.read(File.join(File.dirname(__FILE__), 'input.txt')))
+# find_password(TEST_INPUT)
