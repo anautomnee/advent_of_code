@@ -49,5 +49,5 @@ def rotate(instruction, current_position)
   end
 end
 
-# find_password(File.read(File.join(File.dirname(__FILE__), 'input.txt')))
+# find_password(File.read(File.join(File.dirname(__FILE__), 'input')))
 find_password(TEST_INPUT)
